@@ -99,7 +99,7 @@ mv ../../data/schema/generated/* ../../data/schema/
 
 ```console
 # Copy the jar file to the hazelcast-addon workspace plugins directory
-cp ../../dropins/generated.jar $HAZELCAST_ADDON_WORKSPACE/plugins/
+cp ../../dropins/generated.jar $PADOGRID_WORKSPACE/plugins/
 
 # Add the Portable factory class ID in hazelcast.xml
 switch_cluster myhz
@@ -265,7 +265,7 @@ cd pado_<version>/bin_sh/hazelcast
 
 ```console
 ./compile_generated_code
-cp ../../dropins/generated.jar $HAZELCAST_ADDON_WORKSPACE/plugins/
+cp ../../dropins/generated.jar $PADOGRID_WORKSPACE/plugins/
 ```
 
 8. Start cluster.

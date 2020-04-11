@@ -250,7 +250,7 @@ cd bin_sh/hazelcast
 
 # Copy the generated jar file to the workspace plugins dir so that
 # it gets included in the cluster class path
-cp ../../dropins/uci-ml-generated.jar $HAZELCAST_ADDON_WORKSPACE/plugins/
+cp ../../dropins/uci-ml-generated.jar $PADOGRID_WORKSPACE/plugins/
 ```
 
 ### Start Cluster
@@ -306,7 +306,7 @@ hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw
 30001:org.hazelcast.data.ml.PortableFactoryImpl
 
 # Copy the uci-ml-generated.jar file in the dekstop plubins dir
-cp $HAZELCAST_ADDON_WORKSPACE/plugins/uci-ml-generated.jar plugins/
+cp $PADOGRID_WORKSPACE/plugins/uci-ml-generated.jar plugins/
 
 # Run desktop
 cd bin_sh
