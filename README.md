@@ -49,7 +49,7 @@ The Pado CSV importer facility automatically generates schema files, generates a
 
 ## NW Demo
 
-For our demo, let's import the NW sample data included in the Pado distribution into Hazelcast. To import data in CSV files, you need to generate schema files. Pado provides the `generate_schema` command that auto-generates schema files based on CSV file contents. Once you have schema files ready, then you can generate Hazelcast `VersionedPortable` classes by executing the `generate_versioned_portable` command.
+For our demo, let's import the NW sample data included in the Pado distribution into Hazelcast. To import data in CSV files, you need to first generate schema files. Pado provides the `generate_schema` command which auto-generates schema files based on CSV file contents. Once you have schema files ready, then you can generate Hazelcast `VersionedPortable` classes by executing the `generate_versioned_portable` command.
 
 1. Change directory to the `pado` directory and copy the NW CSV files to the import directory. 
 
@@ -57,17 +57,11 @@ For our demo, let's import the NW sample data included in the Pado distribution 
 cd_app pado
 cd pado_<version>
 
-# Copy CSV files into data/import/
+# Copy CSV files into data/import
 cp -r data/nw/import data/
 ```
 
 2. Generate schema files.
-
-First, edit `bin_sh/setenv.sh` file and set the correct path to `JAVA_HOME`.
-
-```console
-vi bin_sh/setenv.sh
-```
 
 Generate schema files for the `nw` data
 
@@ -79,6 +73,13 @@ cd bin_sh/hazelcast
 
 # Move the generated schema files to data/schema.
 mv ../../data/schema/generated/* ../../data/schema/
+```
+
+:exclamation: If `generate_schema` fails due to a Java path issue, then you can set `JAVA_HOME` in the `setenv.sh` file as shown below.
+
+```console
+# pado_<version>/bin_sh/setenv.sh
+vi ../setenv.sh
 ```
 
 3. Generate `VersionedPortable` source code. The following command reads schema files located in data/schema/ and generates the corresponding `VersionedPortable Java source code.
