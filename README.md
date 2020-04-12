@@ -8,7 +8,7 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 install_bundle -download hazelcast-3-app-pado
 ```
 
-:exclamation: **The Pado scheduler does not support Cygwin at this time.**
+:exclamation: **The Pado scheduler currently does not support Cygwin.**
 
 ## Use Case
 
