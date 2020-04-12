@@ -8,6 +8,8 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 install_bundle -download hazelcast-3-app-pado
 ```
 
+:exclamation: **The Pado scheduler does not support Cygwin at this time.**
+
 ## Use Case
 
 This use case introduces Pado for ingesting CSV file contents in the form of `VersioendPortable` objects into a Hazelcast cluster.
