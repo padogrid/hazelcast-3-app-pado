@@ -99,7 +99,7 @@ vi ../setenv.sh
 5. Deploy the generated jar file to Hazelcast cluster and add the Portable factory class ID in hazelcast.xml.
 
 ```console
-# Copy the jar file to the hazelcast-addon workspace plugins directory
+# Copy the jar file to the padogrid workspace plugins directory
 cp ../../dropins/generated.jar $PADOGRID_WORKSPACE/plugins/
 
 # Add the Portable factory class ID in hazelcast.xml
@@ -287,4 +287,4 @@ Pado is authored by Dae Song Park (email:dspark@netcrest.com) to bring linear sc
 
 The current implementation of Pado only supports Pivotal GemFire 8.x.
 
-The `hazelcast-addon` project was inspired by Pado and borrows many architecture and script ideas from Pado.
+The PadoGrid project borrows many architecture and script ideas from Pado.
