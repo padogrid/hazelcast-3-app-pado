@@ -6,9 +6,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>padogrid.addon</groupId>
-	<artifactId>hazelcast-3-app-pado</artifactId>
+	<artifactId>bundle-hazelcast-3-app-pado</artifactId>
 	<packaging>pom</packaging>
-	<name>hazelcast-3-app-pado</name>
+	<name>${project.artifactId}</name>
 	<version>1.0.0</version>
 	<description>Bundle that includes the Pado app for importing CSV files into Hazelcast</description>
 
