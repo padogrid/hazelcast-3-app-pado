@@ -254,13 +254,9 @@ data/import/
 └── poker-hand-training-true.data
 ```
 
-Let's generate and deploy `VersionedPortable` classes.
+Complile and deploy the generated classes.
 
 ```console
-# Generate VersionedPortable source code
-cd bin_sh/hazelcast
-./generate_versioned_portable -fid 30001 -cid 30021
-
 # Compile the generated source code
 ./compile_generated_code -jar uci-ml-generated.jar
 
