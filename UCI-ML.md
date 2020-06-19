@@ -156,7 +156,7 @@ cd pado_<version>/bin_sh/hazelcast
 ./generate_schema -package org.hazelcast.data.ml -dataDir data/h1/
 ```
 
-:exclamation: The column information for `allhyper.data` is in `data/uci-ml/throid-disease/allhyper.names`. Let's replace the generated field names in the `allhyper.schema` file with the column names found in the `allhyper.names` file as follows:
+:exclamation: The column information for `allhyper.data` is in `data/uci-ml/thyroid-disease/allhyper.names`. Let's replace the generated field names in the `allhyper.schema` file with the column names found in the `allhyper.names` file as follows:
 
 ```console
 cd_app pado
