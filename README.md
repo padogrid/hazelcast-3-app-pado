@@ -161,10 +161,14 @@ hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw
 # Run desktop
 cd bin_sh
 ./desktop
+```
 
-# Run desktop (WSL) - If you are using WSL without the X server then add the correct
-# Windows JAVA_HOME path in bin_win/setenv.bat and run 'desktop.bat'
+If you are using WSL without the X server then set the correct Windows JAVA_HOME path run 'desktop.bat' as follows.
+
+```
+# Change directory where the Windows scripts are located.
 cd bin_win
+
 # Set Windows JAVA_HOME path. If it's already set gobally then you do not need to
 # set it again in setenv.bat
 vi setenv.bat
