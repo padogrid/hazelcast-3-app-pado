@@ -126,15 +126,22 @@ cd pado_<version>
 cp data/uci-ml/thyroid-disease/allhyper.data data/h0/
 ```
 
+:exclamation: There is a bug in the Pado schema generator that does not remove the illegal character, '-', from the class name it generates. Let's replace `-` with `_` in all file names.
+
+```bash
+# Replace '-' with '_' in all file names in 'data/h0' and 'data/h1'
+for i in data/h?/*; do mv $i $(echo $i | sed 's/-/_/g'); done
+```
+
 ### Dataset Files
 
-You should have the following files in the `data/h0` and `data/h1` directories:
+You should have the following files in the `data/h0` and `data/h1` directories. Make sure the file names do not include the hyphen ('-') character.
 
 ```console
 data/h0
 ├── allhyper.data
-├── poker-hand-testing.data
-└── poker-hand-training-true.data
+├── poker_hand_testing.data
+└── poker_hand_training_true.data
 ```
 
 ```console
@@ -204,17 +211,25 @@ Classes, String
 
 ### Generate and Deploy `VersionedPortable`
 
+Let's generate and deploy `VersionedPortable` classes.
+
 ```console
 cd_app pado
-cd pado_<version>
+cd pado_<version>/bin_sh/hazelcast
 
-# Move the genrated schema files to the data/schema directory
+# Specify a factory ID and the start class ID. Note that we point to
+# the generated schecma directory to include only the ones we just generated.
+./generate_versioned_portable -schemaDir data/schema/generated -fid 30001 -cid 30021
+
+# We can now move the generated schema files to the data/schema directory
+# where you may also have other schema files.
 mv data/schema/generated/* data/schema/
 
 # Move the data files to the import directory
 mv data/h0/* data/import/
 mv data/h1/* data/import/
 ```
+
 The `data/schema/` directory now has all the generated schema files.
 
 ```console
@@ -223,8 +238,8 @@ data/schema/
 ├── forestfires.schema
 ├── generated
 ├── incident_event_log.schema
-├── poker-hand-testing.schema
-└── poker-hand-training-true.schema
+├── poker_hand_testing.schema
+└── poker_hand_training_true.schema
 ```
 
 The `data/import/` directory now has all the data files.
