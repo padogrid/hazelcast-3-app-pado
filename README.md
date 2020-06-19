@@ -163,9 +163,11 @@ cd bin_sh
 ./desktop
 ```
 
+### WSL Users
+
 If you are using WSL without the X server then set the correct Windows JAVA_HOME path run 'desktop.bat' as follows.
 
-```
+```console
 # Change directory where the Windows scripts are located.
 cd bin_win
 
