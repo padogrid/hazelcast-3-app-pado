@@ -126,7 +126,7 @@ cd pado_<version>
 cp data/uci-ml/thyroid-disease/allhyper.data data/h0/
 ```
 
-:exclamation: There is a bug in the Pado schema generator that does not remove the illegal character, '-', from the class name it generates. Let's replace `-` with `_` in all file names.
+:exclamation: There is a bug in the Pado schema generator that does not remove the illegal character, `-` (hyphen), from the class names it generates. Let's replace `-` with `_` in all file names.
 
 ```bash
 # Replace '-' with '_' in all file names in 'data/h0' and 'data/h1'
