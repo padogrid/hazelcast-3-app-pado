@@ -223,6 +223,7 @@ cd pado_<version>/bin_sh/hazelcast
 
 # We can now move the generated schema files to the data/schema directory
 # where you may also have other schema files.
+cd ../..
 mv data/schema/generated/* data/schema/
 
 # Move the data files to the import directory
