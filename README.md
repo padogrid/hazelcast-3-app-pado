@@ -148,6 +148,9 @@ cd bin_sh
 # Change directory to hazelcast-desktop
 cd ../hazelcast-desktop_<verson>
 
+# Deploy the generated jar file into the desktop's 'plugins' directory (see #5)
+cp $PADOGRID_WORKSPACE/plugins/generated.jar plugins/
+
 # Add serialization configuration in etc/pado.properties
 vi etc/pado.properties
 
@@ -158,6 +161,16 @@ hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw
 # Run desktop
 cd bin_sh
 ./desktop
+
+# Run desktop (WSL) - If you are using WSL without the X server then add the correct
+# Windows JAVA_HOME path in bin_win/setenv.bat and run 'desktop.bat'
+cd bin_win
+# Set Windows JAVA_HOME path. If it's already set gobally then you do not need to
+# set it again in setenv.bat
+vi setenv.bat
+
+# Run desktop from WSL
+cmd.exe /c desktop.bat
 ```
 
 ## Dataset Examples
