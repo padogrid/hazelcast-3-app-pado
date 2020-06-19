@@ -300,6 +300,8 @@ Total processed file count: 5
 
 ### Run Desktop
 
+:exclamation: The desktop app uses the Hazecast addon, HQL, to retrieve data from the Hazelcast cluster. Unfortunately, there is no support for `limit` due to the Hazelcast API limitations. Selecting any of the large maps from the Explorer (left) pane, many cause the cluster to run out of memory. 
+
 ```console
 # If you haven't installed the desktop app then install and build it.
 create_app -app desktop
@@ -323,4 +325,20 @@ cp $PADOGRID_WORKSPACE/plugins/uci-ml-generated.jar plugins/
 # Run desktop
 cd bin_sh
 ./desktop
+```
+
+### WSL Users
+
+If you are using WSL without the X server then set the correct Windows JAVA_HOME path run `desktop.bat` as follows.
+
+```console
+# Change directory where the Windows scripts are located.
+cd bin_win
+
+# Set Windows JAVA_HOME path. If it's already set gobally then you do not need to
+# set it again in setenv.bat
+vi setenv.bat
+
+# Run desktop from WSL
+cmd.exe /c desktop.bat
 ```
