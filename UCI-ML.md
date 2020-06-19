@@ -213,7 +213,7 @@ mv data/schema/generated/* data/schema/
 
 # Move the data files to the import directory
 mv data/h0/* data/import/
-mv data/h0/* data/import/
+mv data/h1/* data/import/
 ```
 The `data/schema/` directory now has all the generated schema files.
 
