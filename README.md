@@ -5,7 +5,7 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 ## Installing Pado App
 
 ```console
-install_bundle -download bundle-hazelcast-3-app-pado
+install_bundle -download bundle-hazelcast-3n4-app-pado
 ```
 
 :exclamation: **The Pado scheduler currently does not support Cygwin.**
@@ -14,7 +14,7 @@ install_bundle -download bundle-hazelcast-3-app-pado
 
 This use case introduces Pado for ingesting CSV file contents in the form of `VersioendPortable` objects into a Hazelcast cluster.
 
-![Pado CVS Import Flow](/images/app-pado-import.png)
+![Pado CVS Import Flow](images/app-pado-import.png)
 
 
 ## Building Pado
@@ -110,9 +110,11 @@ switch_cluster myhz
 # In hazelcast.xml, add the serialization configuration outputted by
 # the generate_versioned_portable command in step 3.
 vi etc/hazelcast.xml
+```
 
-<!-- Find the serialization element in ect/hazelast.xml and add the portable-factory
-     element shown below. -->
+Find the `<serialization>` element in `ect/hazelast.xml` and add the `<portable-factory>` element shown below.
+
+```xml
              <serialization>
                  <portable-factories>
                      <portable-factory factory-id="30000">
