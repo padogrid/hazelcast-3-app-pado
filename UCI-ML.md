@@ -8,7 +8,7 @@ UCI maintains machine learning datasets that you can quickly ingest into Hazelca
 
 For convenience, the `download_uci_ml` script has been provided in the `bin_sh` directory. You can run that script to download the datasets used in this article. If the script does not work then manually download the datasets by following the download links shown in each dataset section below.
 
-```console
+```bash
 cd_app pado
 cd bin_sh
 ./download_uci_ml
@@ -74,7 +74,7 @@ data/uci-ml/
 
 We'll ingest several datasets into Hazelcast in the form of `VersionedPortable` objects. We need to first generate schema files using the `generate_schema` command which runs per data directory. Since some of the data files may not contain the header row, we won't be able to place all the files in the same directory. Let's create directories to which we can split header and no-header files.
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 
@@ -89,7 +89,7 @@ mkdir -p data/h1
 
 [https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/](https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/)
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 cp data/uci-ml/forestfires/forestfires.csv data/h1
@@ -99,7 +99,7 @@ cp data/uci-ml/forestfires/forestfires.csv data/h1
 
 [https://archive.ics.uci.edu/ml/datasets/Incident+management+process+enriched+event+log](https://archive.ics.uci.edu/ml/datasets/Incident+management+process+enriched+event+log)
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 unzip -d data/h1 data/uci-ml/incident-event-log/incident_event_log.zip
@@ -109,7 +109,7 @@ unzip -d data/h1 data/uci-ml/incident-event-log/incident_event_log.zip
 
 [https://archive.ics.uci.edu/ml/datasets/Poker+Hand](https://archive.ics.uci.edu/ml/datasets/Poker+Hand)
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 cp data/uci-ml/poker-hand/*.data data/h0/
@@ -119,8 +119,8 @@ cp data/uci-ml/poker-hand/*.data data/h0/
 
 [https://archive.ics.uci.edu/ml/datasets/Thyroid+Disease](https://archive.ics.uci.edu/ml/datasets/Thyroid+Disease)
 
-```console
-# Copy allhyper.data to data/ml/h1
+```bash
+# Copy allhyper.data to data/ml/h0
 cd_app pado
 cd pado_<version>
 cp data/uci-ml/thyroid-disease/allhyper.data data/h0/
@@ -152,7 +152,7 @@ data/h1
 
 ### Generate Schema Files
 
-```console
+```bash
 cd_app pado
 cd pado_<version>/bin_sh/hazelcast
 
@@ -165,7 +165,7 @@ cd pado_<version>/bin_sh/hazelcast
 
 :exclamation: The column information for `allhyper.data` is in `data/uci-ml/thyroid-disease/allhyper.names`. Let's replace the generated field names in the `allhyper.schema` file with the column names found in the `allhyper.names` file as follows:
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 
@@ -213,7 +213,7 @@ Classes, String
 
 Let's generate and deploy `VersionedPortable` classes.
 
-```console
+```bash
 cd_app pado
 cd pado_<version>/bin_sh/hazelcast
 
@@ -221,8 +221,17 @@ cd pado_<version>/bin_sh/hazelcast
 # the generated schecma directory to include only the ones we just generated.
 ./generate_versioned_portable -schemaDir data/schema/generated -fid 30001 -cid 30021
 
-# We can now move the generated schema files to the data/schema directory
-# where you may also have other schema files.
+# Compile the generated source code
+./compile_generated_code -jar uci-ml-generated.jar
+
+# Copy the generated jar file to the workspace plugins dir so that
+# it gets included in the cluster class path
+cp ../../dropins/uci-ml-generated.jar $PADOGRID_WORKSPACE/plugins/
+```
+
+We can now move the generated schema files to the data/schema directory where you may also have other schema files.
+
+```bash
 cd ../..
 mv data/schema/generated/* data/schema/
 
@@ -250,38 +259,39 @@ data/import/
 ├── allhyper.data
 ├── forestfires.csv
 ├── incident_event_log.csv
-├── poker-hand-testing.data
-└── poker-hand-training-true.data
-```
-
-Complile and deploy the generated classes.
-
-```console
-# Compile the generated source code
-./compile_generated_code -jar uci-ml-generated.jar
-
-# Copy the generated jar file to the workspace plugins dir so that
-# it gets included in the cluster class path
-cp ../../dropins/uci-ml-generated.jar $PADOGRID_WORKSPACE/plugins/
+├── poker_hand_testing.data
+└── poker_hand_training_true.data
 ```
 
 ### Start Cluster
 
-```console
+```bash
 # Add serialization config
 switch_cluster myhz
 vi etc/hazelcast.xml
-          <portable-factory factory-id="30001">
-          org.hazelcast.data.ml.PortableFactoryImpl
-          </portable-factory>
+```
 
-# Start cluster
+Enter the following in the hazelcast.xml file:
+
+```xml
+    <serialization>
+        <portable-factories>
+            <portable-factory factory-id="30001">
+                 org.hazelcast.data.ml.PortableFactoryImpl
+            </portable-factory>
+        </portable-factories>
+    </serialization>
+```
+
+Start cluster
+
+```bash
 start_cluster
 ```
 
 ### Import Datasets
 
-```console
+```bash
 # Import data
 cd_app pado
 cd pado_<version>/bin_sh/hazelcast
@@ -302,7 +312,7 @@ Total processed file count: 5
 
 :exclamation: The desktop app uses the Hazecast addon, HQL, to retrieve data from the Hazelcast cluster. Unfortunately, there is no support for `limit` due to the Hazelcast API limitations. Selecting any of the large maps from the Explorer (left) pane, many cause the cluster to run out of memory. 
 
-```console
+```bash
 # If you haven't installed the desktop app then install and build it.
 create_app -app desktop
 cd_app desktop
@@ -331,7 +341,7 @@ cd bin_sh
 
 If you are using WSL without the X server then set the correct Windows JAVA_HOME path run `desktop.bat` as follows.
 
-```console
+```bash
 # Change directory where the Windows scripts are located.
 cd bin_win
 
