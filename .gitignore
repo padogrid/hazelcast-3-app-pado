@@ -12,12 +12,13 @@ buildNumber.properties
 
 # PadoGrid
 .addonenv.sh
+.workspace*
 initenv.sh
 setenv.sh
 #apps
 bundles
 clusters
-docker
+#docker
 k8s
 lib
 plugins
@@ -31,3 +32,4 @@ desktop
 setenv.sh0
 build
 pado_*
+apps/perf_test*

@@ -4,7 +4,7 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 
 ## Installing Pado App
 
-```console
+```bash
 install_bundle -download bundle-hazelcast-3n4-app-pado
 ```
 
@@ -19,7 +19,7 @@ This use case introduces Pado for ingesting CSV file contents in the form of `Ve
 
 ## Building Pado
 
-```console
+```bash
 cd_app pado; cd bin_sh
 ./build_app
 ```
@@ -55,7 +55,7 @@ For our demo, let's import the NW sample data included in the Pado distribution 
 
 1. Change directory to the `pado` directory and copy the NW CSV files to the import directory. 
 
-```console
+```bash
 cd_app pado
 cd pado_<version>
 
@@ -67,7 +67,7 @@ cp -r data/nw/import data/
 
 Generate schema files for the `nw` data
 
-```console
+```bash
 # Generate schema files. The following command generates schema files in the
 # data/schema/generated directory.
 cd bin_sh/hazelcast
@@ -79,14 +79,14 @@ mv ../../data/schema/generated/* ../../data/schema/
 
 :exclamation: If `generate_schema` fails due to a Java path issue, then you can set `JAVA_HOME` in the `setenv.sh` file as shown below.
 
-```console
+```bash
 # pado_<version>/bin_sh/setenv.sh
 vi ../setenv.sh
 ```
 
 3. Generate `VersionedPortable` source code. The following command reads schema files located in data/schema/ and generates the corresponding `VersionedPortable Java source code.
 
-```console
+```bash
 # Generate VersionedPortable classes with the factory ID of 30000 and the
 # start class ID of 30000.
 ./generate_versioned_portable  -fid 30000 -cid 30000
@@ -94,13 +94,13 @@ vi ../setenv.sh
 
 4. Compile and create jar file.
 
-```console
+```bash
 ./compile_generated_code
 ```
 
 5. Deploy the generated jar file to Hazelcast cluster and add the Portable factory class ID in hazelcast.xml.
 
-```console
+```bash
 # Copy the jar file to the padogrid workspace plugins directory
 cp ../../dropins/generated.jar $PADOGRID_WORKSPACE/plugins/
 
@@ -126,13 +126,13 @@ Find the `<serialization>` element in `ect/hazelast.xml` and add the `<portable-
 
 6. Start Hazelcast cluster
 
-```console
+```bash
 start_cluster
 ```
 
 7. Import CSV files.
 
-```console
+```bash
 cd_app pado
 cd pado_<version>/bin_sh/hazelcast
 ./import_csv
@@ -140,11 +140,10 @@ cd pado_<version>/bin_sh/hazelcast
 
 8. View imported data using the `desktop` app.
 
-```console
+```bash
 # If you haven't installed the desktop app then install and build it.
 create_app -app desktop
-cd_app desktop
-cd bin_sh
+cd_app desktop; cd bin_sh
 ./build_app
 
 # Change directory to hazelcast-desktop
@@ -153,14 +152,21 @@ cd ../hazelcast-desktop_<verson>
 # Deploy the generated jar file into the desktop's 'plugins' directory (see #5)
 cp $PADOGRID_WORKSPACE/plugins/generated.jar plugins/
 
-# Add serialization configuration in etc/pado.properties
+# Edit etc/pado.properties
 vi etc/pado.properties
+```
 
+Enter serialization configuration in `pado.properties`:
+
+```properties
 hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw.data.PortableFactoryImpl,\
 10000:org.hazelcast.addon.hql.impl.PortableFactoryImpl,\
 30000:org.hazelcast.data.PortableFactoryImpl
+```
 
-# Run desktop
+Run desktop
+
+```bash
 cd bin_sh
 ./desktop
 ```
@@ -169,7 +175,7 @@ cd bin_sh
 
 If you are using WSL without the X server then set the correct Windows JAVA_HOME path run 'desktop.bat' as follows.
 
-```console
+```bash
 # Change directory where the Windows scripts are located.
 cd bin_win
 
@@ -189,7 +195,7 @@ The following links provide Pado instructions for ingesting downloadable dataset
 
 ## Scheduler Demo
 
-Pado includes an ETL scheduler that automates exporting data from databases (and other external systems), and importing them into Hazelcast clusters. You create and schedule jobs in JSON form to periodically export data from any databases via JDBC. Each job defines the required JDBC connectivity and driver information and one or more grid paths (map names) with their query strings and scheduled time information.
+Pado includes an ETL scheduler that automates exporting data from databases and importing them into Hazelcast clusters. You create and schedule jobs in JSON form to periodically export data from any databases via JDBC. Each job defines the required JDBC connectivity and driver information and one or more grid paths (map names) with their query strings and scheduled time information.
 
 Once you have created jobs, you can run them immediately without having the scheduler enabled. This allows you to quickly test your configurations but more importantly, generate the required schema files. You would generate the schema files in the same way as you did in the [NW Demo](#NW-Demo) section. The default scheduler directory is `data/scheduler` and has the same hierarchy as the CSV data directory described previously in the [Pado CSV `data` Directory](#Pado-CSV-data-Directory) section.
 
@@ -201,19 +207,70 @@ data/scheduler
 └── schema
 ```
 
-To run the scheduler demo, you need read/write access to a database. For our demo, we will be using MySQL.
- 
-1. Get access to a database. You need to encrypt your password as follows. Copy the encrypted password, which we will insert in the job file in step 3.
+To run the scheduler demo, you need read/write access to a database. For our demo, we will be using the Docker MySQL container.
 
-```console
+1. Run MySQL and Adminer container using `docker-compose`.
+
+```bash
+cd_docker mysql
+docker-compose up
+```
+
+MySQL root account is setup as follows:
+
+| Parameter      | Value                 |
+| -------------- | --------------------- |
+| Adminer URL    | http://localhost:8080 |
+| MySQL User     | root                  |
+| MySQL Password | rootpw                |
+| MySQL Port     | 3306                  |
+
+2. Create the `nw` database using Adminer.
+
+- Login to MySQL from Adminer URL
+- Select **SQL command** from Adminer
+- Execute the following:
+
+```sql
+create database nw;
+```
+
+3. Ingest data into MySQL using the `perf_test` app.
+
+```bash
+# Create perf_test_mysql
+create_app -name perf_test_mysql
+
+# Edit hibernate.cfg-mysql.xml
+cd_app perf_test_mysql
+vi etc/hibernate.cfg-mysql.xml
+```
+
+Enter the MySQL root password in `hibernate.cfg-mysql.xml`:
+
+```xml
+        <property name="connection.username">root</property>
+        <property name="connection.password">rootpw</property>
+```
+
+Ingest data into MySQL.
+
+```bash
+cd bin_sh
+./test_group -db -run -prop ../etc/group-factory.properties
+```
+
+4. To use the Pado scheduler, you need to encrypt the password as follows. Copy the encrypted password, which we will insert in the job file in step 6.
+
+```bash
 cd_app pado
 cd pado_<version>/bin_sh/tools
 ./encryptor
 ```
 
-2. Copy the scheduler template directory and create jobs that dump database tables to CSV files.
+5. Copy the scheduler template directory and create jobs that dump database tables to CSV files.
 
-```console
+```bash
 # Copy the entire template scheduler directory
 cp -r data/template/scheduler data/
 
@@ -229,7 +286,7 @@ cd data/scheduler/etc
 vi mysql.json
 ```
 
-3. Enter query information in the `mysql.json` file as shown below. Copy/paste the encrypted password in the file. Set the `GridId` attribute to the Hazelcast cluster name. Set the `Path` attributes to the map names. 
+6. Enter query information in the `mysql.json` file as shown below. Copy/paste the encrypted password in the file. Set the `GridId` attribute to the Hazelcast cluster name. Set the `Path` attributes to the map names. 
 
 ```json
 {
@@ -265,43 +322,86 @@ com.mysql.cj.exceptions.WrongArgumentException: HOUR_OF_DAY: 2 -> 3
 
 We have configured two jobs in the `mysql.json` file. The first job downloads the `customers` table every midnight and the second job downloads the `orders` table every hour. We could have configured with more practical queries like downloading just the last hour's worth of orders, for example. For the demo purpose, let's keep it simple and fluid. Our main goal is to ingest the database data into Hazelcast.
 
-4. We need to create the schema files for properly reading and transforming CSV file contents to Hazelcast objects. We can manually create the schema files or simply generate them. To generate the schema files, we need CSV files. This is done by executing the `import_scheduler -now` command which generates CSV files without scheduling the jobs in the default directory, `data/scheduler/import`.
+7. We need to create the schema files for properly reading and transforming CSV file contents to Hazelcast objects. We can manually create the schema files or simply generate them. To generate the schema files, we need CSV files. This is done by executing the `import_scheduler -now` command which generates CSV files without scheduling the jobs in the default directory, `data/scheduler/import`.
 
-```console
+```bash
 cd_app pado
 cd pado_<version>/bin_sh/hazelcast
 ./import_scheduler -now
 ```
 
-5. Generate schema files using the downloaded data files.
+8. Generate schema files using the downloaded data files.
 
-```console
+```bash
 ./generate_schema -schemaDir data/scheduler/schema -dataDir data/scheduler/import -package org.hazelcast.data.demo.nw
 ```
 
-6. Generate the corresponding `VersionedPortable` source code in the default directory, `src/generated`.
+9. Generate the corresponding `VersionedPortable` source code in the default directory, `src/generated`.
 
-```console
+```bash
 ./generate_versioned_portable -schemaDir data/scheduler/schema -fid 20000 -cid 20000
 ```
 
-7. Compile the generated code and deploy the generated jar file to the workspace `plugins` directory so that it will be included in the cluster class path.
+10. Compile the generated code and deploy the generated jar file to the workspace `plugins` directory so that it will be included in the cluster class path.
 
-```console
+```bash
 ./compile_generated_code
 cp ../../dropins/generated.jar $PADOGRID_WORKSPACE/plugins/
 ```
 
-8. Start cluster.
+11. Configure Hazelcast with the generated PortableFactoryImpl class.
 
-```console
+```bash
+cd_cluster
+vi etc/hazelcast.xml
+```
+
+Enter the following in `hazelcast.xml`:
+
+```xml
+    <serialization>
+        <portable-factories>
+            <portable-factory factory-id="20000">
+                 org.hazelcast.data.demo.nw.PortableFactoryImpl
+            </portable-factory>
+        </portable-factories>
+    </serialization>
+```
+
+12. Start cluster.
+
+```bash
 start_cluster
 ```
 
-9. Import CSV file contents to the cluster.
+13. Import CSV file contents to the cluster.
 
-```console
-./import_csv
+```bash
+./import_scheduler -import
+```
+
+14. Run Desktop
+
+```bash
+cd_app desktop
+cd hazelcast-desktop_<verson>
+
+# Edit etc/pado.properties
+vi etc/pado.properties
+```
+
+Enter serialization configuration in `pado.properties`:
+
+```properties
+hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw.data.PortableFactoryImpl,\
+10000:org.hazelcast.addon.hql.impl.PortableFactoryImpl,\
+30000:org.hazelcast.data.PortableFactoryImpl,\
+20000:org.hazelcast.data.demo.nw.PortableFactoryImpl
+````
+
+```bash
+cd bin_sh
+./desktop
 ```
 
 ## About Pado
