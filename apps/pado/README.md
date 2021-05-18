@@ -2,14 +2,6 @@
 
 The pado app provides a Hazelcast `Portable` class generator and CSV file import tools for Hazelcast. This bundle includes step-by-step instructions for ingesting mock data and UCI Machine Learning datasets into Hazelcast. It also includes a Pado scheduler demo that automates scheduled job executions for exporting and importing data from databases.
 
-## Installing Pado App
-
-The `pado` app currently comes in the form of a bundle. To install the pado bundle, Run the `install_bundle` command as follows:
-
-```console
-install_bundle -download bundle-imdg-3.12.4-app-pado.tar.gz
-```
-
 ## Building Pado
 
 ```console
