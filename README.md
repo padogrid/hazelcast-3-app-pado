@@ -98,7 +98,7 @@ vi ../setenv.sh
 ./compile_generated_code
 ```
 
-5. Deploy the generated jar file to Hazelcast cluster and add the Portable factory class ID in hazelcast.xml.
+5. Deploy the generated jar file to a Hazelcast cluster and add the Portable factory class ID in hazelcast.xml.
 
 ```bash
 # Copy the jar file to the padogrid workspace plugins directory
@@ -116,10 +116,13 @@ Find the `<serialization>` element in `ect/hazelast.xml` and add the `<portable-
 
 ```xml
              <serialization>
+                 ...
                  <portable-factories>
+                     ...
                      <portable-factory factory-id="30000">
                           org.hazelcast.data.PortableFactoryImpl
                      </portable-factory>
+                     ...
                  </portable-factories>
              </serialization>
 ```
