@@ -4,6 +4,8 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 
 ## Installing Pado App
 
+![PadoGrid](https://github.com/padogrid/padogrid/raw/develop/images/padogrid-3d-16x16.png) [*Driven by PadoGrid*](https://github.com/padogrid)
+
 ```bash
 install_bundle -download bundle-hazelcast-3n4n5-app-pado
 ```
