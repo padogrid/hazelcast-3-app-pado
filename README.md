@@ -414,9 +414,15 @@ cd bin_sh
 
 Pado is authored by Dae Song Park (email:dspark@netcrest.com) to bring linear scalability to IMDG for storing Big Data. His architecture achieves this by logically federating data grids and providing an abstract API layer that not only hides the complexity of the underlying IMDG API but introduces new Big Data capabilities that IMDG products lack today. He coined the terms **grids within grid** and **grid of grids** to illustrate his architecture which spans in-memory data across a massive number of clusters with a universal namespace similar to URL for easy data access.
 
-The current implementation of Pado only supports Pivotal GemFire 8.x.
+Pado for Geode 1.x and GemFire 9.x is part of PadoGrid and downloadable by running `install_padogrid -product pado`.
+
+Pado for GemFire 8.x is available from [GitHub](https://github.com/netcrest/pado). 
 
 The PadoGrid project borrows many architecture and script ideas from Pado.
+
+## References
+
+1. Pado, *Grid of Grids*, https://github.com/netcrest/pado
 
 ---
 
