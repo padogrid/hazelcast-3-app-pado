@@ -24,6 +24,9 @@ lib
 plugins
 pods
 
+# JupyterLab
+.ipynb_checkpoints
+
 # App specifics
 archive
 log

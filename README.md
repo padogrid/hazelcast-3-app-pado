@@ -16,7 +16,7 @@ install_bundle -download bundle-hazelcast-3n4n5-app-pado
 
 ## Use Case
 
-This use case introduces Pado for ingesting CSV file contents in the form of `VersioendPortable` objects into a Hazelcast cluster.
+This use case introduces Pado for ingesting CSV file contents in the form of `VersionedPortable` objects into a Hazelcast cluster.
 
 ![Pado CVS Import Flow](images/app-pado-import.png)
 
