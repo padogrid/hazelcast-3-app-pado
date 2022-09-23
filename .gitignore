@@ -10,6 +10,9 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+# vi
+*.swp
+
 # PadoGrid
 .addonenv.sh
 .workspace*
@@ -36,3 +39,4 @@ setenv.sh0
 build
 pado_*
 apps/perf_test*
+docker/mysql/data

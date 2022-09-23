@@ -6,11 +6,10 @@ UCI maintains machine learning datasets that you can quickly ingest into Hazelca
 
 ## Dataset Downloads
 
-For convenience, the `download_uci_ml` script has been provided in the `bin_sh` directory. You can run that script to download the datasets used in this article. If the script does not work then manually download the datasets by following the download links shown in each dataset section below.
+For your convenience, the `download_uci_ml` script has been provided in the `bin_sh` directory. You can run that script to download the datasets used in this article. If the script does not work then manually download the datasets by following the download links shown in each dataset section below.
 
 ```bash
-cd_app pado
-cd bin_sh
+cd_app pado/bin_sh
 ./download_uci_ml
 ```
 
@@ -171,10 +170,14 @@ cd pado_<version>
 
 # Edit the schema file and replace the field names at the bottom of the file
 # with the following (Note that Age is String because there are some rows with
-# that column set to '?'. This can be filtered via Pado importer but for now,
+# that column set to '?'. This can be filtered via Pado importer, but for now,
 # let's set it to String.
 vi data/schema/generated/allhyper.schema 
+```
 
+Replace the field names at the bottom of the file with the following:
+
+```console
 Age, String
 Sex, String
 On_thyroxine, String
@@ -271,7 +274,7 @@ switch_cluster myhz
 vi etc/hazelcast.xml
 ```
 
-Enter the following in the hazelcast.xml file:
+Enter the following in the `hazelcast.xml` file:
 
 ```xml
     <serialization>
@@ -301,6 +304,7 @@ cd pado_<version>/bin_sh/hazelcast
 Upon successful run, you should see an output similar to the following:
 
 ```console
+...
           Total file count: 5
 Total processed file count: 5
     Total error file count: 0
@@ -312,15 +316,21 @@ Total processed file count: 5
 
 :exclamation: The desktop app uses the Hazecast addon, HQL, to retrieve data from the Hazelcast cluster. Unfortunately, there is no support for `limit` due to the Hazelcast API limitations. Selecting any of the large maps from the Explorer (left) pane, many cause the cluster to run out of memory. 
 
-```bash
-# If you haven't installed the desktop app then install and build it.
-create_app -app desktop
-cd_app desktop
-cd bin_sh
-./build_app
+If you have not installed PadoDesktop then install it now as follows.
 
-# Change directory to hazelcast-desktop
-cd ../hazelcast-desktop_<verson>
+```bash
+install_padogrid -product hazelcast-desktop 
+update_products -product hazelcast-desktop
+```
+
+Create and update a HazelcastDesktop app as follows.
+
+```bash
+# Create a HazelcastDesktop app
+create_app -product hazelcast -app desktop
+
+# Change directory to desktop
+cd_app desktop
 
 # Add serialization configuration in etc/pado.properties
 vi etc/pado.properties
@@ -328,9 +338,6 @@ vi etc/pado.properties
 hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw.data.PortableFactoryImpl,\
 10000:org.hazelcast.addon.hql.impl.PortableFactoryImpl,\
 30001:org.hazelcast.data.ml.PortableFactoryImpl
-
-# Copy the uci-ml-generated.jar file in the dekstop plubins dir
-cp $PADOGRID_WORKSPACE/plugins/uci-ml-generated.jar plugins/
 
 # Run desktop
 cd bin_sh

@@ -28,6 +28,12 @@ cd_app pado; cd bin_sh
 ./build_app
 ```
 
+The `build_app` script builds and deploys Pado in the `pado` app directory. You can check the directory contents as follows, where `<version>` is the Pado version.
+
+```bash
+ls ../pado_<version>
+```
+
 ## Pado CSV `data` Directory
 
 The Pado CSV `data` directory structure includes the `import` directory where you place the CSV files to import and the `schema` directory in which you provide schema files that define how to parse the CSV files. Pado automatically moves the successfully imported files from the `import` directory to the `processed` directory. It moves the unsuccessful ones in the `error` directory.
@@ -56,6 +62,14 @@ The Pado CSV importer facility automatically generates schema files, generates a
 ## NW Demo
 
 For our demo, let's import the NW sample data included in the Pado distribution into Hazelcast. To import data in CSV files, you need to first generate schema files. Pado provides the `generate_schema` command which auto-generates schema files based on CSV file contents. Once you have schema files ready, then you can generate Hazelcast `VersionedPortable` classes by executing the `generate_versioned_portable` command.
+
+0. Create a Hazelcast cluster.
+
+For our demo, we will use the default cluster, `myhz`, which can be created as follows.
+
+```bash
+make_cluster -product hazelcast -cluster myhz
+```
 
 1. Change directory to the `pado` directory and copy the NW CSV files to the import directory. 
 
@@ -147,17 +161,21 @@ cd pado_<version>/bin_sh/hazelcast
 
 8. View imported data using the `desktop` app.
 
+If you have not installed HazelcastDesktop then install it now as follows.
+
 ```bash
-# If you haven't installed the desktop app then install and build it.
-create_app -app desktop
-cd_app desktop; cd bin_sh
-./build_app
+install_padogrid -product hazelcast-desktop 
+update_products -product hazelcast-desktop
+```
 
-# Change directory to hazelcast-desktop
-cd ../hazelcast-desktop_<verson>
+Create and update a HazelcastDesktop app as follows.
 
-# Deploy the generated jar file into the desktop's 'plugins' directory (see #5)
-cp $PADOGRID_WORKSPACE/plugins/generated.jar plugins/
+```bash
+# Create a HazelcastDesktop app
+create_app -product hazelcast -app desktop
+
+# Change directory to desktop
+cd_app desktop
 
 # Edit etc/pado.properties
 vi etc/pado.properties
@@ -180,7 +198,7 @@ cd bin_sh
 
 ### WSL Users
 
-If you are using WSL without the X server then set the correct Windows JAVA_HOME path run 'desktop.bat' as follows.
+If you are using WSL without the X Server then set the correct Windows JAVA_HOME path run 'desktop.bat' as follows.
 
 ```bash
 # Change directory where the Windows scripts are located.
@@ -202,7 +220,7 @@ The following links provide Pado instructions for ingesting downloadable dataset
 
 ## Scheduler Demo
 
-Pado includes an ETL scheduler that automates exporting data from databases and importing them into Hazelcast clusters. You create and schedule jobs in JSON form to periodically export data from any databases via JDBC. Each job defines the required JDBC connectivity and driver information and one or more grid paths (map names) with their query strings and scheduled time information.
+Pado includes an ETL scheduler that automates exporting data from databases and importing them into Hazelcast clusters. You create and schedule jobs in JSON to periodically export data from any databases via JDBC. Each job defines the required JDBC connectivity and driver information and one or more grid paths (map names) with their query strings and scheduled time information.
 
 Once you have created jobs, you can run them immediately without having the scheduler enabled. This allows you to quickly test your configurations but more importantly, generate the required schema files. You would generate the schema files in the same way as you did in the [NW Demo](#NW-Demo) section. The default scheduler directory is `data/scheduler` and has the same hierarchy as the CSV data directory described previously in the [Pado CSV `data` Directory](#Pado-CSV-data-Directory) section.
 
@@ -246,7 +264,7 @@ create database nw;
 
 ```bash
 # Create perf_test_mysql
-create_app -name perf_test_mysql
+create_app -product hazelcast -name perf_test_mysql
 
 # Edit hibernate.cfg-mysql.xml
 cd_app perf_test_mysql
@@ -279,6 +297,8 @@ cd pado_<version>/bin_sh/tools
 
 ```bash
 # Copy the entire template scheduler directory
+cd_app pado
+cd pado_<version>
 cp -r data/template/scheduler data/
 
 # IMPORTANT: Remove the files that came with the template. We don't need them.
@@ -300,7 +320,7 @@ vi mysql.json
         "Driver": "com.mysql.cj.jdbc.Driver",
         "Url": "jdbc:mysql://localhost:3306/nw?allowPublicKeyRetrieval=true&serverTimezone=EST",
         "User": "root",
-        "Password": "yMgF43JvHM0fWSHDCA1GmQ==",
+        "Password": "",
         "Delimiter": ",",
         "Null": "'\\N'",
         "GridId": "myhz",
@@ -327,7 +347,7 @@ Note that `serverTimezone` is set to `EST` for the JDBC URL. Without it, you may
 com.mysql.cj.exceptions.WrongArgumentException: HOUR_OF_DAY: 2 -> 3
 ```
 
-We have configured two jobs in the `mysql.json` file. The first job downloads the `customers` table every midnight and the second job downloads the `orders` table every hour. We could have configured with more practical queries like downloading just the last hour's worth of orders, for example. For the demo purpose, let's keep it simple and fluid. Our main goal is to ingest the database data into Hazelcast.
+We have configured two (2) jobs in the `mysql.json` file. The first job downloads the `customers` table every midnight and the second job downloads the `orders` table every hour. We could have configured with more practical queries like downloading just the last hour's worth of orders, for example. For the demo purpose, let's keep it simple and fluid. Our main goal is to ingest the database data into Hazelcast.
 
 7. We need to create the schema files for properly reading and transforming CSV file contents to Hazelcast objects. We can manually create the schema files or simply generate them. To generate the schema files, we need CSV files. This is done by executing the `import_scheduler -now` command which generates CSV files without scheduling the jobs in the default directory, `data/scheduler/import`.
 
@@ -384,6 +404,8 @@ start_cluster
 13. Import CSV file contents to the cluster.
 
 ```bash
+cd_app pado
+cd pado_<version>/bin_sh/hazelcast
 ./import_scheduler -import
 ```
 
