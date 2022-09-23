@@ -232,7 +232,7 @@ data/scheduler
 └── schema
 ```
 
-To run the scheduler demo, you need read/write access to a database. For our demo, we will be using the Docker MySQL container.
+To run the scheduler demo, you need read/write access to a database. For our demo, we will be using the MySQL Docker container.
 
 1. Run MySQL and Adminer container using `docker-compose`.
 
@@ -318,7 +318,7 @@ vi mysql.json
 ```json
 {
         "Driver": "com.mysql.cj.jdbc.Driver",
-        "Url": "jdbc:mysql://localhost:3306/nw?allowPublicKeyRetrieval=true&serverTimezone=EST",
+        "Url": "jdbc:mysql://localhost:3306/nw?allowPublicKeyRetrieval=true&serverTimezone=America/New_York",
         "User": "root",
         "Password": "",
         "Delimiter": ",",
@@ -341,7 +341,7 @@ vi mysql.json
 }
 ```
 
-Note that `serverTimezone` is set to `EST` for the JDBC URL. Without it, you may see the following exception if your MySQL uses the system timezone and unable to calculate the dates due to the leap year.
+Note that `serverTimezone` is set to `America/New_York` for the JDBC URL. Without it, you may see the following exception if your MySQL uses the system timezone and unable to calculate the dates due to the leap year.
 
 ```console
 com.mysql.cj.exceptions.WrongArgumentException: HOUR_OF_DAY: 2 -> 3
