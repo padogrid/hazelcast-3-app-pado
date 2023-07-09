@@ -413,7 +413,6 @@ cd pado_<version>/bin_sh/hazelcast
 
 ```bash
 cd_app desktop
-cd hazelcast-desktop_<verson>
 
 # Edit etc/pado.properties
 vi etc/pado.properties
