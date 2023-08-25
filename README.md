@@ -313,14 +313,14 @@ cd data/scheduler/etc
 vi mysql.json
 ```
 
-6. Enter query information in the `mysql.json` file as shown below. Copy/paste the encrypted password in the file. Set the `GridId` attribute to the Hazelcast cluster name. Set the `Path` attributes to the map names. 
+6. Enter query information in the `mysql.json` file as shown below. Copy/paste the encrypted database password in the file. Set the `GridId` attribute to the Hazelcast cluster name. Set the `Path` attributes to the map names. 
 
 ```json
 {
         "Driver": "com.mysql.cj.jdbc.Driver",
         "Url": "jdbc:mysql://localhost:3306/nw?allowPublicKeyRetrieval=true&serverTimezone=America/New_York",
         "User": "root",
-        "Password": "",
+        "Password": "<paste the encrypted password here>",
         "Delimiter": ",",
         "Null": "'\\N'",
         "GridId": "myhz",

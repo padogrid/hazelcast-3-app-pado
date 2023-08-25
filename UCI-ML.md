@@ -86,12 +86,12 @@ mkdir -p data/h1
 
 ### Forest Fires
 
-[https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/](https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/)
+[https://archive.ics.uci.edu/ml/machine-learning-databases/forest-fires/](https://archive.ics.uci.edu/dataset/162/forest+fires)
 
 ```bash
 cd_app pado
 cd pado_<version>
-cp data/uci-ml/forestfires/forestfires.csv data/h1
+cp data/uci-ml/forestfires/forestfires.csv data/h1/
 ``` 
 
 ### Incident Event Log

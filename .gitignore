@@ -13,6 +13,9 @@ buildNumber.properties
 # vi
 *.swp
 
+# macOS
+.DS_Store
+
 # PadoGrid
 .addonenv.sh
 .workspace*
