@@ -2,7 +2,7 @@
 
 UCI maintains machine learning datasets that you can quickly ingest into Hazelcast using the Pado CSV file importer. This article provides step-by-step instructions for downloading datasets, generating schema files, generating `VersionedPortable` source code, compiling generated source, deploying generated jar files, and running the Hazelcast Desktop app to browse the datasets in Hazelcast.
 
-[https://archive.ics.uci.edu/ml/index.php](https://archive.ics.uci.edu/ml/index.php)
+<https://archive.ics.uci.edu/>
 
 ## Dataset Downloads
 
