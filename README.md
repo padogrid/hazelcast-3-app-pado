@@ -216,7 +216,7 @@ cmd.exe /c desktop.bat
 
 The following links provide Pado instructions for ingesting downloadable datasets.
 
-- [UCI Machine Learning Repository](README_UCI_ML.md)
+- [UCI Machine Learning Repository Datasets](README_UCI_ML.md)
 
 ## Scheduler Demo
 
@@ -445,7 +445,7 @@ The PadoGrid project borrows many architecture and script ideas from Pado.
 ## References
 
 1. Pado, *Grid of Grids*, https://github.com/netcrest/pado
-2. UCI Machine Learning Repository, https://archive.ics.uci.edu
+2. [UCI Machine Learning Repository Datasets](README_UCI_ML.md)
 
 ---
 
