@@ -234,11 +234,11 @@ data/scheduler
 
 To run the scheduler demo, you need read/write access to a database. For our demo, we will be using the MySQL Docker container.
 
-1. Run MySQL and Adminer container using `docker-compose`.
+1. Run MySQL and Adminer container using `docker compose`.
 
 ```bash
 cd_docker mysql
-docker-compose up
+docker compose up
 ```
 
 MySQL root account is setup as follows:
@@ -430,6 +430,19 @@ hazelcast.client.config.serialization.portable.factories=1:org.hazelcast.demo.nw
 ```bash
 cd bin_sh
 ./desktop
+```
+
+## Teardown
+
+```bash
+# Exit Hazelcast Desktop
+
+# Stop Hazelcast cluster
+stop_cluster
+
+# Stop MySQL container
+cd_docker mysql
+docker compose down
 ```
 
 ## About Pado
