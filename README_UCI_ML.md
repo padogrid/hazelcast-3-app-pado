@@ -320,7 +320,7 @@ If you have not installed PadoDesktop then install it now as follows.
 
 ```bash
 install_padogrid -product hazelcast-desktop 
-update_products -product hazelcast-desktop
+update_padogrid -product hazelcast-desktop
 ```
 
 Create and update a HazelcastDesktop app as follows.

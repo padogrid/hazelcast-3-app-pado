@@ -68,7 +68,7 @@ For our demo, let's import the NW sample data included in the Pado distribution 
 For our demo, we will use the default cluster, `myhz`, which can be created as follows.
 
 ```bash
-make_cluster -product hazelcast -cluster myhz
+create_cluster -product hazelcast -cluster myhz
 ```
 
 1. Change directory to the `pado` directory and copy the NW CSV files to the import directory. 
@@ -165,7 +165,7 @@ If you have not installed HazelcastDesktop then install it now as follows.
 
 ```bash
 install_padogrid -product hazelcast-desktop 
-update_products -product hazelcast-desktop
+update_padogrid -product hazelcast-desktop
 ```
 
 Create and update a HazelcastDesktop app as follows.
