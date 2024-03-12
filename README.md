@@ -2,6 +2,10 @@
 
 ---
 
+<!-- Platforms -->
+[![PadoGrid 1.x](https://github.com/padogrid/padogrid/wiki/images/padogrid-padogrid-1.x.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-PadoGrid-1.x) [![Host OS](https://github.com/padogrid/padogrid/wiki/images/padogrid-host-os.drawio.svg)](https://github.com/padogrid/padogrid/wiki/Platform-Host-OS)
+
+
 # App: Pado
 
 The pado app provides a Hazelcast `Portable` class generator and CSV file import tools for Hazelcast. This bundle includes step-by-step instructions for ingesting mock data and UCI Machine Learning datasets into Hazelcast. It also includes a Pado scheduler demo that automates scheduled job executions for exporting and importing data from databases.
@@ -12,7 +16,7 @@ The pado app provides a Hazelcast `Portable` class generator and CSV file import
 install_bundle -download bundle-hazelcast-3n4n5-app-pado
 ```
 
-:exclamation: **The Pado scheduler currently does not support Cygwin.**
+❗️ **The Pado scheduler currently does not support Cygwin.**
 
 ## Use Case
 
@@ -20,11 +24,20 @@ This use case introduces Pado for ingesting CSV file contents in the form of `Ve
 
 ![Pado CVS Import Flow](images/app-pado-import.png)
 
+## Bundle Contents
+
+```console
+apps
+└── pado
+
+docker
+└── mysql
+```
 
 ## Building Pado
 
 ```bash
-cd_app pado; cd bin_sh
+cd_app pado/bin_sh
 ./build_app
 ```
 
@@ -88,6 +101,8 @@ Generate schema files for the `nw` data
 ```bash
 # Generate schema files. The following command generates schema files in the
 # data/schema/generated directory.
+cd_app pado
+cd pado_<version>
 cd bin_sh/hazelcast
 ./generate_schema
 
@@ -95,7 +110,7 @@ cd bin_sh/hazelcast
 mv ../../data/schema/generated/* ../../data/schema/
 ```
 
-:exclamation: If `generate_schema` fails due to a Java path issue, then you can set `JAVA_HOME` in the `setenv.sh` file as shown below.
+❗️ If `generate_schema` fails due to a Java path issue, then you can set `JAVA_HOME` in the `setenv.sh` file as shown below.
 
 ```bash
 # pado_<version>/bin_sh/setenv.sh
@@ -278,10 +293,16 @@ Enter the MySQL root password in `hibernate.cfg-mysql.xml`:
         <property name="connection.password">rootpw</property>
 ```
 
-Ingest data into MySQL.
+Install the MySQL JDBC driver by building the app.
 
 ```bash
 cd bin_sh
+./build_app
+```
+
+Ingest data into MySQL.
+
+```bash
 ./test_group -db -run -prop ../etc/group-factory.properties
 ```
 
@@ -395,9 +416,10 @@ Enter the following in `hazelcast.xml`:
     </serialization>
 ```
 
-12. Start cluster.
+12. Restart cluster.
 
 ```bash
+stop_cluster
 start_cluster
 ```
 
